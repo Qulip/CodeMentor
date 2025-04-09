@@ -1,7 +1,7 @@
 from typing import Dict, Any
 
-from agent.state import AgentState
-from agent.agent import Agent
+from back.agent.state import AgentState
+from back.base.agent import Agent
 
 
 class InputAgent(Agent):

@@ -1,9 +1,8 @@
-from abc import abstractmethod
 from langgraph.graph import StateGraph, END
 
-from agent.state import AgentState
-from agent.agent import Agent
-from retrieval.retrieval_service import RetrievalService
+from back.agent.state import AgentState
+from back.base.agent import Agent
+from back.base.retrieval_service import RetrievalService
 
 
 class RagAgent(Agent):
