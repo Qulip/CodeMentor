@@ -93,14 +93,23 @@ class RetrievalService(ABC):
             # TODO: exception 처리 방법 연구 필요
             return None
 
+    @abstractmethod
+    def _make_query(self, question: str, lang: str = "ko") -> str:
+        """
+        검색 쿼리 생성 메서드(추상 메서드)
+        """
+        pass
+
     def search_question(
-        self, question: str, query: str, lang: str = "ko", k: int = 5
+        self, question: str, lang: str = "ko", k: int = 5
     ) -> List[Dict[str, Any]]:
         """
         벡터 스토어에서 문서를 검색해 Similarity Search 진행 메서드
         """
 
         vector_store = self._get_vector_store_from_search_result(question, lang)
+        query = self._make_query(question, lang)
+
         if not vector_store:
             return []
         try:
@@ -111,6 +120,9 @@ class RetrievalService(ABC):
 
 
 if __name__ == "__main__":
+    """
+    DuckDuckGo 검색 메서드 테스트
+    """
     test = RetrievalService
     print(test.get_search_content("Spring Boot Dispatcher Servlet", "en", 5))
     # 영어로 검색하니 검색 시간이 한글보다 소요됨.
