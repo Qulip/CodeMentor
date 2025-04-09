@@ -24,9 +24,9 @@ class Agent(ABC):
     def _setup_graph(self):
         """
         LangGraph 워크플로우 구성:
-          1. 메시지 준비
-          2. 응답 생성
-          3. 상태 업데이트 (커스텀 후킹)
+        1. 메시지 준비
+        2. 응답 생성
+        3. 상태 업데이트 (커스텀 후킹)
         """
         workflow = StateGraph(AgentState)
 
