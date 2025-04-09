@@ -124,5 +124,5 @@ if __name__ == "__main__":
     DuckDuckGo 검색 메서드 테스트
     """
     test = RetrievalService
-    print(test.get_search_content("Spring Boot Dispatcher Servlet", "en", 5))
+    print(test._get_search_content("Spring Boot Dispatcher Servlet", "en", 5))
     # 영어로 검색하니 검색 시간이 한글보다 소요됨.
