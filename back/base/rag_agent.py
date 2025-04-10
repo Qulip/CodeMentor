@@ -17,7 +17,6 @@ class RagAgent(Agent):
         system_prompt: str,
         role: str,
         retrieval_service: RetrievalService,
-        k: int = 3,
         lang: str = "ko",
         session_id: str = None,
     ):
@@ -26,7 +25,6 @@ class RagAgent(Agent):
             role=role,
             session_id=session_id,
         )
-        self.k = k  # 검색할 문서 개수
         self.lang = lang
         self.retrieval_service = retrieval_service
 
@@ -59,13 +57,14 @@ class RagAgent(Agent):
         """
         RAG 자료 검색 메서드
         """
-        if self.k <= 0:
-            return {**state, "context": ""}
 
         answer_state = state["answer_state"]
-        question = answer_state["question"]
+        summary = answer_state["summary"]
+        classification = answer_state["classification"]
 
-        docs = self.retrieval_service.search_question(question, self.lang, self.k)
+        docs = self.retrieval_service.search_question(
+            summary, classification, self.lang
+        )
 
         answer_state["docs"][self.role] = (
             [doc.page_content for doc in docs] if docs else []
