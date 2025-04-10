@@ -64,7 +64,7 @@ class InputAgent(Agent):
 
         new_answer_state["summary"] = data["summary"]
         new_answer_state["classification"] = data["classification"]
-        new_answer_state["leve;"] = data["level"]
+        new_answer_state["level"] = data["level"]
 
         return {**state, "answer_state": new_answer_state}
 
