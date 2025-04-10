@@ -4,7 +4,7 @@ from typing import Any, Dict, Optional, List
 from duckduckgo_search import DDGS
 from langchain.schema import Document
 
-from back.utils.config import get_embeddings
+from utils.config import get_embeddings
 
 
 class RetrievalService(ABC):
@@ -18,7 +18,7 @@ class RetrievalService(ABC):
 
     @abstractmethod
     def _get_search_keyword_from_question(
-        self, summary: str, classification: Dict[str:str]
+        self, summary: str, classification: Dict[str, str]
     ) -> List[str]:
         """
         질문 기반으로 검색할 키워드 생성 메서드(추상 메서드)
@@ -79,7 +79,7 @@ class RetrievalService(ABC):
             return []
 
     def _get_vector_store_from_search_result(
-        self, summary: str, classification: Dict[str:str], lang: str = "ko"
+        self, summary: str, classification: Dict[str, str], lang: str = "ko"
     ) -> Optional[FAISS]:
         """
         검색 및 검색 결과를 통해 벡터 스토어 생성 메서드
@@ -103,7 +103,7 @@ class RetrievalService(ABC):
         pass
 
     def search_question(
-        self, summary: str, classification: Dict[str:str], lang: str = "ko"
+        self, summary: str, classification: Dict[str, str], lang: str = "ko"
     ) -> List[Dict[str, Any]]:
         """
         벡터 스토어에서 문서를 검색해 Similarity Search 진행 메서드

@@ -4,8 +4,8 @@ from typing import Dict, Any
 from langgraph.graph import StateGraph, END
 from langfuse.callback import CallbackHandler
 
-from back.utils.config import get_llm
-from back.agent.state import AgentState, AnswerState
+from utils.config import get_llm
+from agent.state import AgentState, AnswerState
 
 
 class Agent(ABC):
