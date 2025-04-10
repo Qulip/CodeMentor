@@ -91,7 +91,8 @@ class Agent(ABC):
         answer_state = state["answer_state"]
         response = state["response"]
         level = state["level"]
-        domain = state["domain"]
+        summary = state["summary"]
+        classification = state["classification"]
         solutions = state["solutions"]
 
         new_answer_state = answer_state.copy()
@@ -101,7 +102,8 @@ class Agent(ABC):
                 "role": self.role,
                 "content": response,
                 "level": level,
-                "domain": domain,
+                "summary": summary,
+                "classification": classification,
                 "solutions": solutions,
             }
         )

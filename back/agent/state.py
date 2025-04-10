@@ -39,7 +39,8 @@ class AnswerState(TypedDict):
     question: str
     messages: List[Dict]
     level: str
-    domain: str
+    summary: str
+    classification: Dict[str, str]
     solutions: List[str]
     docs: Dict[str, List]  # RAG 검색 결과
     contexts: Dict[str, str]  # RAG 검색 컨텍스트
