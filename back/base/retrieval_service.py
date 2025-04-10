@@ -96,7 +96,9 @@ class RetrievalService(ABC):
             return None
 
     @abstractmethod
-    def _make_query(self, summary: str, lang: str = "ko") -> str:
+    def _make_query(
+        self, summary: str, classification: Dict[str, str], lang: str = "ko"
+    ) -> str:
         """
         검색 쿼리 생성 메서드(추상 메서드)
         """
@@ -112,7 +114,7 @@ class RetrievalService(ABC):
         vector_store = self._get_vector_store_from_search_result(
             summary, classification, lang
         )
-        query = self._make_query(summary, lang)
+        query = self._make_query(summary, classification, lang)
 
         if not vector_store:
             return []
