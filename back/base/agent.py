@@ -86,14 +86,12 @@ class Agent(ABC):
 
     def _update_state(self, state: AgentState) -> AgentState:
         """
-        상태 업데이트: 공통 업데이트 항목 이후 Agent별 추가 업데이트
+        상태 업데이트: Agent별 추가 업데이트 이후 공통 업데이트 항목 업데이트
         """
-        answer_state = state["answer_state"]
-        response = state["response"]
-        level = state["level"]
-        summary = state["summary"]
-        classification = state["classification"]
-        solutions = state["solutions"]
+        custom_state = self._additional_update_state(state)
+
+        answer_state = custom_state["answer_state"]
+        response = custom_state["response"]
 
         new_answer_state = answer_state.copy()
 
@@ -101,20 +99,14 @@ class Agent(ABC):
             {
                 "role": self.role,
                 "content": response,
-                "level": level,
-                "summary": summary,
-                "classification": classification,
-                "solutions": solutions,
             }
         )
 
-        update_state = {**state, "answer_state": new_answer_state}
+        return {**custom_state, "answer_state": new_answer_state}
 
-        return self._custom_update_state(update_state)
-
-    def _custom_update_state(self, state: AgentState) -> AgentState:
+    def _update_answer_state(self, state: AgentState) -> AgentState:
         """
-        Agent별 추가 업데이트를 위한 메서드
+        Agent별 answer_state 업데이트를 위한 메서드
         """
         return state
 
