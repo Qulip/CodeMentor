@@ -6,7 +6,7 @@ from base.agent import Agent
 
 
 class InputAgent(Agent):
-    def __init__(self, session_id=None):
+    def __init__(self, session_id: str = None):
         super().__init__(
             system_prompt="당신은 숙련된 소프트웨어 엔지니어입니다. 사용자가 남긴 질문에서 기술적인 맥락을 이해하고 핵심을 요약해주는 역할을 맡고 있습니다.",
             role=AgentType.INPUT,
@@ -37,15 +37,16 @@ class InputAgent(Agent):
             - Advanced: 프레임워크/도구 관련 전문 용어 사용
             
             답변 규칙
-            - 분류 정보는 각각 가장 일치하는 1개 만 골라야 한다. 다만, 일치하는 분야가 없을 경우 답변하지 않는다.
+            - 분류 정보는 각각 가장 일치하는 1개 만 골라야 한다.
+            - 일치하는 분야가 없을 경우 답변하지 않는다. 다만, 도메인, 언어는 필수로 작성한다.
             - 답변은 Json 형태로 제공한다.
             (예시:{{ 
                 "summary": "Spring Boot 환경에서 JPA로 엔티티를 저장할 때 'detached entity passed to persist' 오류가 발생함.",
                 "classification": {{
                     "domain": "Backend",
-                    "framework": "Spring Boot",
                     "language": "Java",
-                    "error_type": "런타임 에러",
+                    "framework": "Spring Boot",
+                    "errorType": "런타임 에러",
                     "tags": "엔티티 매핑"
                 }},
                 "level": "Intermediate"
