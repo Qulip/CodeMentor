@@ -1,4 +1,5 @@
 from typing import Dict, Any
+import json
 
 from agent.state import AgentState, AgentType
 from base.agent import Agent
@@ -43,6 +44,20 @@ class InputAgent(Agent):
                 }}
             }})
             """
+
+    def _update_answer_state(self, state: AgentState) -> AgentState:
+        """
+        Input Agent 전용 추가 업데이트 메서드
+        """
+        response = state["response"]
+        data = json.loads(response)
+
+        new_answer_state = state["answer_state"]
+
+        new_answer_state["summary"] = data["summary"]
+        new_answer_state["classification"] = data["classification"]
+
+        return {**state, "answer_state": new_answer_state}
 
 
 if __name__ == "__main__":
