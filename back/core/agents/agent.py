@@ -5,7 +5,7 @@ from langgraph.graph import StateGraph, END
 from langfuse.callback import CallbackHandler
 
 from utils.config import get_llm
-from agent.state import AgentState, AnswerState
+from core.state import AgentState, AnswerState
 
 
 class Agent(ABC):

@@ -1,7 +1,7 @@
 from typing import Dict, Any
 
-from base.rag_agent import RagAgent
-from agent.state import AgentState, AgentType
+from core.agents.rag_agent import RagAgent
+from core.state import AgentState, AgentType
 from retrieval.analyzer_retrieval_service import AnalyzerRetrievalService
 
 

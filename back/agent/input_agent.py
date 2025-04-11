@@ -1,8 +1,8 @@
 from typing import Dict, Any
 import json
 
-from agent.state import AgentState, AgentType
-from base.agent import Agent
+from core.state import AgentState, AgentType
+from core.agents.agent import Agent
 
 
 class InputAgent(Agent):

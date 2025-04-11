@@ -1,7 +1,7 @@
 from typing import Dict, List
 from langchain.schema import HumanMessage, SystemMessage
 
-from base.retrieval_service import RetrievalService
+from core.retrieval.retrieval_service import RetrievalService
 from utils.config import get_llm
 
 
