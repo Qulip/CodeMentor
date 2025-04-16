@@ -53,12 +53,12 @@ class RagAgent(Agent):
 
         self.graph = workflow.compile()
 
-    def _retrieve_context(self, state: AgentState) -> AgentState:
+    def _retrieve_context(self, agent_state: AgentState) -> AgentState:
         """
         RAG 자료 검색 메서드
         """
 
-        answer_state = state["answer_state"]
+        answer_state = agent_state["answer_state"]
 
         docs = self.retrieval_service.search_question(answer_state, self.lang)
 
@@ -68,7 +68,7 @@ class RagAgent(Agent):
 
         context = self._format_context(docs)
 
-        return {**state, "context": context}
+        return {**agent_state, "context": context}
 
     def _format_context(self, docs: list) -> str:
         """

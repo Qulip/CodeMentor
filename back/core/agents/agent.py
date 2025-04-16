@@ -42,14 +42,14 @@ class Agent(ABC):
 
         self.graph = workflow.compile()
 
-    def _prepare_messages(self, state: AgentState) -> AgentState:
+    def _prepare_messages(self, agent_state: AgentState) -> AgentState:
         """
         메시지 준비: 시스템 프롬프트, 기존 메시지 및 커스텀 프롬프트 조합
         """
-        answer_state = state["answer_state"]
+        answer_state = agent_state["answer_state"]
 
-        if "context" in state:
-            context = state["context"]
+        if "context" in agent_state:
+            context = agent_state["context"]
         else:
             context = ""
 
@@ -66,7 +66,7 @@ class Agent(ABC):
         prompt = self._create_prompt({**answer_state, "context": context})
         messages.append(HumanMessage(content=prompt))
 
-        return {**state, "messages": messages}
+        return {**agent_state, "messages": messages}
 
     @abstractmethod
     def _create_prompt(self, state: Dict[str, Any]) -> str:
@@ -75,20 +75,20 @@ class Agent(ABC):
         """
         pass
 
-    def _generate_response(self, state: AgentState) -> AgentState:
+    def _generate_response(self, agent_state: AgentState) -> AgentState:
         """
         LLM 호출 및 프롬프트 응답 생성
         """
-        messages = state["messages"]
+        messages = agent_state["messages"]
         response = get_llm().invoke(messages)
 
-        return {**state, "response": response.content}
+        return {**agent_state, "response": response.content}
 
-    def _update_state(self, state: AgentState) -> AgentState:
+    def _update_state(self, agent_state: AgentState) -> AgentState:
         """
         상태 업데이트: Agent별 추가 업데이트 이후 공통 업데이트 항목 업데이트
         """
-        custom_state = self._additional_update_state(state)
+        custom_state = self._additional_update_state(agent_state)
 
         answer_state = custom_state["answer_state"]
         response = custom_state["response"]
@@ -104,18 +104,18 @@ class Agent(ABC):
 
         return {**custom_state, "answer_state": new_answer_state}
 
-    def _update_answer_state(self, state: AgentState) -> AgentState:
+    def _update_answer_state(self, agent_state: AgentState) -> AgentState:
         """
         Agent별 answer_state 업데이트를 위한 메서드
         """
-        return state
+        return agent_state
 
-    def run(self, state: AnswerState) -> AnswerState:
+    def run(self, answer_state: AnswerState) -> AnswerState:
         """
         Agent 워크플로우 실행
         """
         agent_state = AgentState(
-            answer_state=state, context="", messages=[], response=""
+            answer_state=answer_state, context="", messages=[], response=""
         )
 
         langfuse_handler = CallbackHandler(session_id=self.session_id)
