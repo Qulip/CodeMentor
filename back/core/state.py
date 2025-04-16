@@ -68,3 +68,30 @@ class AnswerState(TypedDict):
     solutions: List[str]
     docs: Dict[str, List]
     contexts: Dict[str, str]
+
+    def get_solution_fstring(self) -> str:
+        fstring_list = []
+
+        if self.get("solutions"):
+            fstring_list.append(f"- 제공한 해결방법: ")
+            for solution in self.get("solutions"):
+                fstring_list.append(f"  > '{solution}'")
+
+        rst = f""
+        if fstring_list:
+            rst += "\n" + "\n".join(fstring_list)
+
+        return rst
+
+    def get_solution_fstring(self) -> str:
+        fstring_list = []
+
+        if self.get("solutions"):
+            fstring_list.append(f"- 제공한 해결방법: ")
+            for solution in self.get("solutions"):
+                fstring_list.append(f"  > '{solution}'")
+
+        rst = f""
+        if fstring_list:
+            rst += "\n" + "\n".join(fstring_list)
+        return rst
