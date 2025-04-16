@@ -5,6 +5,7 @@ from duckduckgo_search import DDGS
 from langchain.schema import Document
 
 from utils.config import get_embeddings
+from core.state import AnswerState
 
 
 class RetrievalService(ABC):
@@ -17,9 +18,7 @@ class RetrievalService(ABC):
         self.k = k
 
     @abstractmethod
-    def _get_search_keyword_from_question(
-        self, summary: str, classification: Dict[str, str]
-    ) -> List[str]:
+    def _get_search_keyword_from_question(self, answerState: AnswerState) -> List[str]:
         """
         질문 기반으로 검색할 키워드 생성 메서드(추상 메서드)
         """
@@ -79,13 +78,13 @@ class RetrievalService(ABC):
             return []
 
     def _get_vector_store_from_search_result(
-        self, summary: str, classification: Dict[str, str], lang: str = "ko"
+        self, answerState: AnswerState, lang: str = "ko"
     ) -> Optional[FAISS]:
         """
         검색 및 검색 결과를 통해 벡터 스토어 생성 메서드
         """
 
-        search_keyword = self._get_search_keyword_from_question(summary, classification)
+        search_keyword = self._get_search_keyword_from_question(answerState)
         seach_result = self._get_search_content(search_keyword, lang)
         if not seach_result:
             return None
@@ -96,25 +95,21 @@ class RetrievalService(ABC):
             return None
 
     @abstractmethod
-    def _make_query(
-        self, summary: str, classification: Dict[str, str], lang: str = "ko"
-    ) -> str:
+    def _make_query(self, answerState: AnswerState, lang: str = "ko") -> str:
         """
         검색 쿼리 생성 메서드(추상 메서드)
         """
         pass
 
     def search_question(
-        self, summary: str, classification: Dict[str, str], lang: str = "ko"
+        self, answerState: AnswerState, lang: str = "ko"
     ) -> List[Dict[str, Any]]:
         """
         벡터 스토어에서 문서를 검색해 Similarity Search 진행 메서드
         """
 
-        vector_store = self._get_vector_store_from_search_result(
-            summary, classification, lang
-        )
-        query = self._make_query(summary, classification, lang)
+        vector_store = self._get_vector_store_from_search_result(answerState, lang)
+        query = self._make_query(answerState, lang)
 
         if not vector_store:
             return []

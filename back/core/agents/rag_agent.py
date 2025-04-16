@@ -59,12 +59,8 @@ class RagAgent(Agent):
         """
 
         answer_state = state["answer_state"]
-        summary = answer_state["summary"]
-        classification = answer_state["classification"]
 
-        docs = self.retrieval_service.search_question(
-            summary, classification, self.lang
-        )
+        docs = self.retrieval_service.search_question(answer_state, self.lang)
 
         answer_state["docs"][self.role] = (
             [doc.page_content for doc in docs] if docs else []

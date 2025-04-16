@@ -2,6 +2,7 @@ from typing import Dict, List
 from langchain.schema import HumanMessage, SystemMessage
 
 from core.retrieval.retrieval_service import RetrievalService
+from core.state import AnswerState
 from utils.config import get_llm
 
 
@@ -9,9 +10,10 @@ class AnalyzerRetrievalService(RetrievalService):
     def __init__(self, k: int = 3):
         super().__init__(k=k)
 
-    def _get_search_keyword_from_question(
-        self, summary: str, classification: Dict[str, str]
-    ) -> List[str]:
+    def _get_search_keyword_from_question(self, answerState: AnswerState) -> List[str]:
+
+        summary = answerState["summary"]
+        classification = answerState["classification"]
 
         prompt = f"""
         다음은 사용자가 남긴 프로그래밍 오류 질문과 제공해준 해결 방법입니다. 
@@ -32,7 +34,10 @@ class AnalyzerRetrievalService(RetrievalService):
         - 사용 언어: '{classification["language"]}'
         """
 
-        self._add_additional_info(prompt, classification)
+        prompt = self._add_additional_info(prompt, classification)
+
+        prompt += answerState.get_problem_fstring()
+        prompt += answerState.get_solution_fstring()
 
         messages = [
             SystemMessage(
@@ -47,12 +52,13 @@ class AnalyzerRetrievalService(RetrievalService):
 
         return result[:3]
 
-    def _make_query(
-        self, summary: str, classification: Dict[str, str], lang: str = "ko"
-    ) -> str:
+    def _make_query(self, answerState: AnswerState, lang: str = "ko") -> str:
         """
         검색 쿼리 생성 메서드(추상 메서드)
         """
+
+        summary = answerState["summary"]
+        classification = answerState["classification"]
 
         prompt = f"""
         다음은 사용자가 남긴 프로그래밍 오류 질문과 제공해준 해결 방법입니다. 
@@ -72,7 +78,10 @@ class AnalyzerRetrievalService(RetrievalService):
         - 사용 언어: '{classification["language"]}'
         """
 
-        self._add_additional_info(prompt, classification)
+        prompt = self._add_additional_info(prompt, classification)
+
+        prompt += answerState.get_problem_fstring()
+        prompt += answerState.get_solution_fstring()
 
         messages = [
             SystemMessage(
@@ -93,16 +102,6 @@ class AnalyzerRetrievalService(RetrievalService):
             additional_info.append(f"- 에러 타입: '{classification['errorType']}'")
         if classification.get("tags"):
             additional_info.append(f"- 태그: '{classification['tags']}'")
-
-        if classification.get("problems"):
-            additional_info.append(f"- 오류 원인: ")
-            for problem in classification.get("problems"):
-                additional_info.append(f"  > '{problem}'")
-
-        if classification.get("solutions"):
-            additional_info.append(f"- 제공한 해결방법: ")
-            for solution in classification.get("solutions"):
-                additional_info.append(f"  > '{solution}'")
 
         if additional_info:
             prompt += "\n" + "\n".join(additional_info)
