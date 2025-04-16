@@ -55,6 +55,7 @@ class AnswerState(TypedDict):
     - classification: 질문 분야
     - problems: 예상 원인 리스트
     - solutions: 예상 원인 솔루션 리스트
+    - study_tips: 추가 학습 추천 내용
     - docs: RAG 검색 결과
     - contexts: RAG 검색 컨텍스트
     """
@@ -66,6 +67,7 @@ class AnswerState(TypedDict):
     classification: Dict[str, str]
     problems: List[str]
     solutions: List[str]
+    study_tips: List[Dict]
     docs: Dict[str, List]
     contexts: Dict[str, str]
 

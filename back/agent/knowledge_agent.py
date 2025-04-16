@@ -1,4 +1,5 @@
 from typing import Dict, Any
+import json
 
 from core.agents.rag_agent import RagAgent
 from core.state import AgentState, AgentType
@@ -26,29 +27,44 @@ class AnalyzerAgent(RagAgent):
 
             질문: '{question}'
 
-            제공한 답변
+            {state.get_problem_fstring()}
+
+            {state.get_solution_fstring()}
+
+            관련 정보:
+            {context}
 
             답변 규칙:
-            - 검색어는 콤마로 제공 e.g.) 원인1,원인2,원인3
-            - 원인만 제공하고 설명은 하지 않음.
+            - 정보와 선택 사유을 제공.
+            - 선택 사유는 100자 이내, 1~3문장으로 작성
+            - 결과는 Json 배열 형태로 제공한다.
+            (예시:[
+                {{ 
+                    "infomation": "JPA 기본 개념 및 어노테이션 학습",
+                    "reason": "객체-관계 매핑 이해가 프로젝트 설계에 필수적입니다."
+                }},
+                {{ 
+                    "infomation": "데이터 베이스 정규화",
+                    "reason": "엔티티의 설계가 정규화가 부족함. 정규화를 학습하여 엔티티를 다시 설계하면 더욱 좋은 설계가 가능할 듯 함."
+                }},
+                {{ 
+                    "infomation": "Query 메서드와 JPQL 활용",
+                    "reason": "효율적인 데이터 조회 및 동적 쿼리 구현에 유용합니다."
+                }},
+            ])
             - 가장 적합도가 높은 순으로 나열
         """
 
-    def _create_solution_prompt(self, state: Dict[str, Any]) -> str:
-
-        return f"""
-            
+    def _update_answer_state(self, agent_state: AgentState) -> AgentState:
         """
-
-    def _update_answer_state(self, state: AgentState) -> AgentState:
+        KnowledgeAgent 전용 추가 업데이트 메서드
+        - study_tips
         """
-        AnalyzerAgent 전용 추가 업데이트 메서드
-        """
-        response = state["response"]
+        response = agent_state["response"]
+        data = json.loads(response)
 
-        new_answer_state = state["answer_state"]
+        new_answer_state = agent_state["answer_state"]
 
-        new_answer_state["problems"] = [s.strip() for s in response.content.split(",")]
-        new_answer_state["solutions"] = []
+        new_answer_state["study_tips"] = data
 
-        return {**state, "answer_state": new_answer_state}
+        return {**agent_state, "answer_state": new_answer_state}
