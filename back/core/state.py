@@ -69,13 +69,13 @@ class AnswerState(TypedDict):
     docs: Dict[str, List]
     contexts: Dict[str, str]
 
-    def get_solution_fstring(self) -> str:
+    def get_problem_fstring(self) -> str:
         fstring_list = []
 
-        if self.get("solutions"):
-            fstring_list.append(f"- 제공한 해결방법: ")
-            for solution in self.get("solutions"):
-                fstring_list.append(f"  > '{solution}'")
+        if self.get("problems"):
+            fstring_list.append(f"- 예상 오류 원인: ")
+            for problem in self.get("problems"):
+                fstring_list.append(f"  > '{problem}'")
 
         rst = f""
         if fstring_list:
