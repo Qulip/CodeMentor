@@ -97,3 +97,17 @@ class AnswerState(TypedDict):
         if fstring_list:
             rst += "\n" + "\n".join(fstring_list)
         return rst
+
+    def get_study_tips_fstring(self) -> str:
+        fstring_list = []
+
+        if self.get("study_tips"):
+            fstring_list.append(f"- 추가로 학습하면 좋을 내용: ")
+            for tip in self.get("study_tips"):
+                fstring_list.append(f"  > 내용: '{tip["infomation"]}'")
+                fstring_list.append(f"    이유: '{tip["reason"]}'")
+
+        rst = f""
+        if fstring_list:
+            rst += "\n" + "\n".join(fstring_list)
+        return rst
