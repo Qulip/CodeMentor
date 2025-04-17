@@ -6,7 +6,7 @@ from core.state import AnswerState
 from utils.config import get_llm
 
 
-class AnalyzerRetrievalService(RetrievalService):
+class KnowledgeRetrievalService(RetrievalService):
     def __init__(self, k: int = 3):
         super().__init__(k=k)
 

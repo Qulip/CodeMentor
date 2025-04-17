@@ -6,7 +6,7 @@ from core.state import AgentState, AgentType
 from retrieval.knowledge_retrieval_service import KnowledgeRetrievalService
 
 
-class AnalyzerAgent(RagAgent):
+class RetrieverAgent(RagAgent):
     def __init__(self, k: int = 3, lang: str = "ko", session_id: str = None):
         super().__init__(
             system_prompt="당신은 시니어 소프트웨어 엔지니어입니다. 사용자의 오류 질문과 해결책을 보고 사용자가 추가로 학습하면 좋을 프로그래밍 및 컴퓨터 공학 지식을 제공해주는 역할을 맡고 있습니다.",
