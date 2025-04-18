@@ -4,16 +4,17 @@ from langchain.schema import HumanMessage, SystemMessage
 from core.retrieval.retrieval_service import RetrievalService
 from core.state import AnswerState
 from utils.config import get_llm
+from utils.string import get_additional_info_fstring, get_problem_fstring, get_solution_fstring
 
 
 class KnowledgeRetrievalService(RetrievalService):
     def __init__(self, k: int = 3):
         super().__init__(k=k)
 
-    def _get_search_keyword_from_question(self, answerState: AnswerState) -> List[str]:
+    def _get_search_keyword_from_question(self, answer_state: AnswerState) -> List[str]:
 
-        summary = answerState["summary"]
-        classification = answerState["classification"]
+        summary = answer_state["summary"]
+        classification = answer_state["classification"]
 
         prompt = f"""
         다음은 사용자가 남긴 프로그래밍 오류 질문과 제공해준 해결 방법입니다. 
@@ -34,10 +35,9 @@ class KnowledgeRetrievalService(RetrievalService):
         - 사용 언어: '{classification["language"]}'
         """
 
-        prompt = self._add_additional_info(prompt, classification)
-
-        prompt += answerState.get_problem_fstring()
-        prompt += answerState.get_solution_fstring()
+        prompt += get_additional_info_fstring(answer_state)
+        prompt += get_problem_fstring(answer_state)
+        prompt += get_solution_fstring(answer_state)
 
         messages = [
             SystemMessage(
@@ -52,13 +52,13 @@ class KnowledgeRetrievalService(RetrievalService):
 
         return result[:3]
 
-    def _make_query(self, answerState: AnswerState, lang: str = "ko") -> str:
+    def _make_query(self, answer_state: AnswerState, lang: str = "ko") -> str:
         """
         검색 쿼리 생성 메서드(추상 메서드)
         """
 
-        summary = answerState["summary"]
-        classification = answerState["classification"]
+        summary = answer_state["summary"]
+        classification = answer_state["classification"]
 
         prompt = f"""
         다음은 사용자가 남긴 프로그래밍 오류 질문과 제공해준 해결 방법입니다. 
@@ -78,10 +78,9 @@ class KnowledgeRetrievalService(RetrievalService):
         - 사용 언어: '{classification["language"]}'
         """
 
-        prompt = self._add_additional_info(prompt, classification)
-
-        prompt += answerState.get_problem_fstring()
-        prompt += answerState.get_solution_fstring()
+        prompt += get_additional_info_fstring(answer_state)
+        prompt += get_problem_fstring(answer_state)
+        prompt += get_solution_fstring(answer_state)
 
         messages = [
             SystemMessage(
@@ -92,18 +91,3 @@ class KnowledgeRetrievalService(RetrievalService):
 
         llm_response = get_llm().invoke(messages)
         return llm_response.content
-
-    def _add_additional_info(prompt: str, classification: Dict[str, str]) -> str:
-        additional_info = []
-
-        if classification.get("framework"):
-            additional_info.append(f"- 프레임워크: '{classification['framework']}'")
-        if classification.get("errorType"):
-            additional_info.append(f"- 에러 타입: '{classification['errorType']}'")
-        if classification.get("tags"):
-            additional_info.append(f"- 태그: '{classification['tags']}'")
-
-        if additional_info:
-            prompt += "\n" + "\n".join(additional_info)
-
-        return prompt
