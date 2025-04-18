@@ -1,8 +1,7 @@
-from typing import Dict, Any
 import json
 
-from core.state import AgentState, AgentType
 from core.agents.agent import Agent
+from core.state import AgentState, AgentType, AnswerState
 
 
 class InputAgent(Agent):
@@ -13,7 +12,7 @@ class InputAgent(Agent):
             session_id=session_id,
         )
 
-    def _create_prompt(self, state: Dict[str, Any]) -> str:
+    def _create_prompt(self, state: AnswerState) -> str:
 
         question = state["question"]
 

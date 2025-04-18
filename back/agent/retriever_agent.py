@@ -1,9 +1,9 @@
-from typing import Dict, Any
 import json
 
 from core.agents.rag_agent import RagAgent
-from core.state import AgentState, AgentType
+from core.state import AgentState, AgentType, AnswerState
 from retrieval.knowledge_retrieval_service import KnowledgeRetrievalService
+from utils.string import get_problem_fstring, get_solution_fstring
 
 
 class RetrieverAgent(RagAgent):
@@ -16,10 +16,10 @@ class RetrieverAgent(RagAgent):
             session_id=session_id,
         )
 
-    def _create_prompt(self, state: Dict[str, Any]) -> str:
+    def _create_prompt(self, state: AnswerState)-> str:
 
         question = state["question"]
-        context = state["context"]
+        context = state["contexts"]
 
         return f"""
             다음은 사용자가 프로그래밍 관련 오류에 대해 남긴 질문과 해결 방법입니다.
@@ -27,9 +27,9 @@ class RetrieverAgent(RagAgent):
 
             질문: '{question}'
 
-            {state.get_problem_fstring()}
+            {get_problem_fstring(state)}
 
-            {state.get_solution_fstring()}
+            {get_solution_fstring(state)}
 
             관련 정보:
             {context}

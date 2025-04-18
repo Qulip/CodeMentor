@@ -1,6 +1,5 @@
 from langchain.schema import HumanMessage, SystemMessage, AIMessage
 from abc import ABC, abstractmethod
-from typing import Dict, Any
 from langgraph.graph import StateGraph, END
 from langfuse.callback import CallbackHandler
 
@@ -69,7 +68,7 @@ class Agent(ABC):
         return {**agent_state, "messages": messages}
 
     @abstractmethod
-    def _create_prompt(self, state: Dict[str, Any]) -> str:
+    def _create_prompt(self, state: AnswerState) -> str:
         """
         에이전트 별 프롬프트 생성 로직 (추상 메서드)
         """

@@ -1,7 +1,5 @@
-from typing import Dict, Any
-
 from core.agents.rag_agent import RagAgent
-from core.state import AgentState, AgentType
+from core.state import AgentState, AgentType, AnswerState
 from retrieval.analyzer_retrieval_service import AnalyzerRetrievalService
 
 
@@ -15,10 +13,10 @@ class AnalyzerAgent(RagAgent):
             session_id=session_id,
         )
 
-    def _create_prompt(self, state: Dict[str, Any]) -> str:
+    def _create_prompt(self, state: AnswerState) -> str:
 
         question = state["question"]
-        context = state["context"]
+        context = state["contexts"]
 
         return f"""
             다음은 사용자가 프로그래밍 관련 오류에 대해 남긴 질문입니다.

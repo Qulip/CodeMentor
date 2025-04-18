@@ -1,7 +1,5 @@
-from typing import Dict, Any
-
-from core.state import AgentState, AgentType
 from core.agents.agent import Agent
+from core.state import AgentState, AgentType, AnswerState
 
 
 class GeneratorAgent(Agent):
@@ -12,13 +10,13 @@ class GeneratorAgent(Agent):
             session_id=session_id,
         )
 
-    def _create_prompt(self, state: Dict[str, Any]) -> str:
+    def _create_prompt(self, state: AnswerState)-> str:
 
         problem_list = state["problems"]
         self.problem_idx = len(state["problems"]) - len(state["solutions"])
 
         problem = problem_list[self.problem_idx]
-        context = state["context"][problem]
+        context = state["contexts"][problem]
 
         return f"""
             다음은 사용자의 오류 입니다. 해당 오류를 보고 어떻게 해결 할 수 있을지에 대한 방법을 제시해주세요. 

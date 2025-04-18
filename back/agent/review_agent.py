@@ -1,7 +1,6 @@
-from typing import Dict, Any
-
-from core.state import AgentType
 from core.agents.agent import Agent
+from core.state import AgentType, AnswerState
+from utils.string import get_problem_fstring, get_solution_fstring, get_study_tips_fstring
 
 
 class ReviewerAgent(Agent):
@@ -12,7 +11,7 @@ class ReviewerAgent(Agent):
             session_id=session_id,
         )
 
-    def _create_prompt(self, state: Dict[str, Any]) -> str:
+    def _create_prompt(self, state: AnswerState) -> str:
 
         question = state["question"]
 
@@ -28,10 +27,10 @@ class ReviewerAgent(Agent):
 
             질문: '{question}'
 
-            {state.get_problem_fstring()}
+            {get_problem_fstring(state)}
 
-            {state.get_solution_fstring()}
+            {get_solution_fstring(state)}
 
-            {state.get_study_tips_fstring()}
+            {get_study_tips_fstring(state)}
 
             """
