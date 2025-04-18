@@ -1,8 +1,8 @@
 from langgraph.graph import StateGraph, END
 
-from core.state import AgentState
 from core.agents.agent import Agent
 from core.retrieval.retrieval_service import RetrievalService
+from core.state import AgentState
 
 
 class RagAgent(Agent):

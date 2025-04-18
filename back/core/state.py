@@ -66,14 +66,3 @@ class AgentType:
             cls.REVIEWER: "결과리뷰",
         }
         return mapping.get(role, role)
-
-    @classmethod
-    def get_agent_finish_text(cls, role: str) -> str:
-        mapping = {
-            cls.INPUT: "문제의 분야와 난이도 파악을 완료했어요! 🎯",
-            cls.ANALYZER: "예상되는 문제의 원인 분석이 완료됐어요! 🔍",
-            cls.GENERATOR: "효과적인 해결 방법을 찾아냈어요! 💡",
-            cls.RETRIEVER: "관련된 추가 학습 자료를 준비했어요! 📚",
-            cls.REVIEWER: "모든 내용을 최종적으로 정리했어요! ✅",
-        }
-        return mapping.get(role, "아직 작업을 진행 중이에요... ⏳")

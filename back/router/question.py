@@ -1,14 +1,16 @@
-from typing import Any
-import uuid
-import json
 import asyncio
+import json
+import uuid
+from typing import Any
+
 from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
-from pydantic import BaseModel
 from langfuse.callback import CallbackHandler
+from pydantic import BaseModel
 
 from core.state import AnswerState
 from graph.graph import create_agent_graph
+from utils.string import get_agent_finish_text
 
 router = APIRouter(
     prefix="/api/v1/question",
@@ -76,3 +78,18 @@ async def answer_generator(answer_graph, initial_state, langfuse_handler):
         subgraph_node = subgraph.get("update_state", None)
 
         # TODO : Role 따라 값 전달 추가
+        if subgraph_node:
+            finish_text = get_agent_finish_text(role)
+            event_data = {
+                "type": "update",
+                "data": {
+                    "role": role,
+                    "finish_text": finish_text,
+                },
+            }
+            yield f"data: {json.dumps(event_data, ensure_ascii=False)}\n\n"
+            print(event_data)
+
+            await asyncio.sleep(0.01)
+
+    yield f"data: {json.dumps({'type': 'end', 'data': {}}, ensure_ascii=False)}\n\n"

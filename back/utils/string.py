@@ -1,4 +1,4 @@
-from core.state import AnswerState
+from core.state import AnswerState, AgentType
 
 
 def get_additional_info_fstring(answer_state: AnswerState) -> str:
@@ -18,6 +18,7 @@ def get_additional_info_fstring(answer_state: AnswerState) -> str:
 
     return rst
 
+
 def get_problem_fstring(answer_state: AnswerState) -> str:
     fstring_list = []
 
@@ -32,6 +33,7 @@ def get_problem_fstring(answer_state: AnswerState) -> str:
 
     return rst
 
+
 def get_solution_fstring(answer_state: AnswerState) -> str:
     fstring_list = []
 
@@ -44,6 +46,7 @@ def get_solution_fstring(answer_state: AnswerState) -> str:
     if fstring_list:
         rst += "\n" + "\n".join(fstring_list)
     return rst
+
 
 def get_study_tips_fstring(answer_state: AnswerState) -> str:
     fstring_list = []
@@ -58,3 +61,14 @@ def get_study_tips_fstring(answer_state: AnswerState) -> str:
     if fstring_list:
         rst += "\n" + "\n".join(fstring_list)
     return rst
+
+
+def get_agent_finish_text(role: str) -> str:
+    mapping = {
+        AgentType.INPUT: "문제의 분야와 난이도 파악을 완료했어요! 🎯",
+        AgentType.ANALYZER: "예상되는 문제의 원인 분석이 완료됐어요! 🔍",
+        AgentType.GENERATOR: "효과적인 해결 방법을 찾아냈어요! 💡",
+        AgentType.RETRIEVER: "관련된 추가 학습 자료를 준비했어요! 📚",
+        AgentType.REVIEWER: "모든 내용을 최종적으로 정리했어요! ✅",
+    }
+    return mapping.get(role, "아직 작업을 진행 중이에요... ⏳")
