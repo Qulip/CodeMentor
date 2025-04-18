@@ -17,12 +17,13 @@ class Question(Base):
     - solutions: 예상 원인 솔루션 리스트
     - study_tips: 추가 학습 추천 내용
     - docs: RAG 검색 결과
-    - contexts: RAG 검색 컨텍스트
+    - created_time: 생성 시간
     """
 
     __tablename__ = "questions"
+    __table_args__ = {"sqlite_autoincrement": True}
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, autoincrement=True, index=True)
     question = Column(Text, nullable=False)
     message = Column(Text, nullable=False)
     level = Column(String(20), nullable=False)
@@ -33,4 +34,3 @@ class Question(Base):
     study_tips = Column(Text, nullable=False)
     docs = Column(Text, nullable=False)
     created_time = Column(DateTime, default=datetime.datetime.now)
-    updated_time = Column(DateTime, default=datetime.datetime.now)
