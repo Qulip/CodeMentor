@@ -30,11 +30,11 @@ class QuestionBase(BaseModel):
     docs: str
 
 
-class DebateCreate(QuestionBase):
+class QuestionCreate(QuestionBase):
     pass
 
 
-class DebateSchema(QuestionBase):
+class QuestionSchema(QuestionBase):
     created_at: datetime
 
     class Config:

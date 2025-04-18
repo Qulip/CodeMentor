@@ -1,7 +1,6 @@
-import os
 from dotenv import load_dotenv
-from pydantic_settings import BaseSettings, SettingsConfigDict
 from langchain_openai import AzureChatOpenAI, AzureOpenAIEmbeddings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # .env 파일에서 환경 변수 로드
 load_dotenv()
@@ -21,7 +20,7 @@ class Settings(BaseSettings):
     LANGFUSE_HOST: str
 
     API_V1_STR: str = "/api/v1"
-    PROJECT_NAME: str = "Debate Arena API"
+    PROJECT_NAME: str = "Question Arena API"
 
     API_BASE_URL: str
 

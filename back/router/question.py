@@ -30,7 +30,7 @@ class QuestionResponse(BaseModel):
 
 
 @router.post("/question/stream")
-async def stream_debate_workflow(request: QuestionRequest):
+async def stream_question_workflow(request: QuestionRequest):
     question = request.question
     max_search = request.max_search
 
@@ -77,7 +77,6 @@ async def answer_generator(answer_graph, initial_state, langfuse_handler):
         subgraph = chunk[1]
         subgraph_node = subgraph.get("update_state", None)
 
-        # TODO : Role 따라 값 전달 추가
         if subgraph_node:
             finish_text = get_agent_finish_text(role)
             event_data = {
