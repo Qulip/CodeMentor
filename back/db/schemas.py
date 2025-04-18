@@ -35,6 +35,7 @@ class QuestionCreate(QuestionBase):
 
 
 class QuestionSchema(QuestionBase):
+    id: int
     created_at: datetime
 
     class Config:
