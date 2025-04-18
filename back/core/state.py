@@ -29,6 +29,7 @@ class AnswerState(TypedDict):
     docs: Dict[str, List]
     contexts: Dict[str, str]
 
+
 class AgentState(TypedDict):
     """
     에이전트 내부 상태 타입 정의
@@ -57,16 +58,22 @@ class AgentType:
 
     @classmethod
     def to_korean(cls, role: str) -> str:
-        if role == cls.INPUT:
-            return "입력분류"
-        elif role == cls.ANALYZER:
-            return "문제분석"
-        elif role == cls.GENERATOR:
-            return "해결방법"
-        elif role == cls.RETRIEVER:
-            return "관련지식"
-        elif role == cls.REVIEWER:
-            return "결과리뷰"
+        mapping = {
+            cls.INPUT: "입력분류",
+            cls.ANALYZER: "문제분석",
+            cls.GENERATOR: "해결방법",
+            cls.RETRIEVER: "관련지식",
+            cls.REVIEWER: "결과리뷰",
+        }
+        return mapping.get(role, role)
 
-        else:
-            return role
+    @classmethod
+    def get_agent_finish_text(cls, role: str) -> str:
+        mapping = {
+            cls.INPUT: "문제의 분야와 난이도 파악을 완료했어요! 🎯",
+            cls.ANALYZER: "예상되는 문제의 원인 분석이 완료됐어요! 🔍",
+            cls.GENERATOR: "효과적인 해결 방법을 찾아냈어요! 💡",
+            cls.RETRIEVER: "관련된 추가 학습 자료를 준비했어요! 📚",
+            cls.REVIEWER: "모든 내용을 최종적으로 정리했어요! ✅",
+        }
+        return mapping.get(role, "아직 작업을 진행 중이에요... ⏳")
