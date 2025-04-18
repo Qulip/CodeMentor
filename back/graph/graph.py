@@ -1,11 +1,11 @@
 from langgraph.graph import StateGraph, END
 
-from core.state import AnswerState, AgentType
-from agent.input_agent import InputAgent
-from agent.generator_agent import GeneratorAgent
 from agent.analyzer_agent import AnalyzerAgent
+from agent.generator_agent import GeneratorAgent
+from agent.input_agent import InputAgent
 from agent.retriever_agent import RetrieverAgent
 from agent.review_agent import ReviewerAgent
+from core.state import AnswerState, AgentType
 
 
 def create_agent_graph(k: int = 3, session_id: str = ""):
@@ -27,6 +27,11 @@ def create_agent_graph(k: int = 3, session_id: str = ""):
     workflow.set_entry_point(AgentType.INPUT)
 
     workflow.add_edge(AgentType.INPUT, AgentType.ANALYZER)
+    workflow.add_conditional_edges(
+        AgentType.INPUT,
+        _is_question_about_programing,
+        [END, AgentType.ANALYZER],
+    )
     workflow.add_edge(AgentType.ANALYZER, AgentType.GENERATOR)
 
     workflow.add_conditional_edges(
@@ -39,6 +44,12 @@ def create_agent_graph(k: int = 3, session_id: str = ""):
     workflow.add_edge(AgentType.REVIEWER, END)
 
     return workflow.compile()
+
+
+def _is_question_about_programing(state: AnswerState):
+    if state["isNotProgramingQuestion"]:
+        return END
+    return AgentType.ANALYZER
 
 
 def _is_solution_generate_end(state: AnswerState):
@@ -57,6 +68,6 @@ if __name__ == "__main__":
 
     graph_image = graph.get_graph().draw_mermaid_png()
 
-    output_path = "agent_graph.png"
+    output_path = "../agent_graph.png"
     with open(output_path, "wb") as f:
         f.write(graph_image)

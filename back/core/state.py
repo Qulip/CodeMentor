@@ -20,6 +20,7 @@ class AnswerState(TypedDict):
 
     question: str
     messages: List[Dict]
+    isNotProgramingQuestion: str
     level: str
     summary: str
     classification: Dict[str, str]

@@ -36,6 +36,7 @@ class InputAgent(Agent):
             - Advanced: 프레임워크/도구 관련 전문 용어 사용
             
             답변 규칙
+            - 질문 요약은 255자 이내로 제공한다.
             - 분류 정보는 각각 가장 일치하는 1개 만 골라야 한다.
             - 일치하는 분야가 없을 경우 답변하지 않는다. 다만, 도메인, 언어는 필수로 작성한다.
             - 답변은 Json 형태로 제공한다.
@@ -50,6 +51,8 @@ class InputAgent(Agent):
                 }},
                 "level": "Intermediate"
             }})
+            - 만약 프로그래밍 관련 질문이 아니라면, 답변이 불가능하다 말해줘.
+            (예시: {{"isNotProgramingQuestion": "해당 질문은 프로그래밍 질문이 아니라 답변이 어렵습니다."}})
             """
 
     def _update_answer_state(self, state: AgentState) -> AgentState:
@@ -59,6 +62,14 @@ class InputAgent(Agent):
         response = state["response"]
         data = json.loads(response)
 
+        if data["isNotProgramingQuestion"]:
+            new_answer_state = state["answer_state"]
+
+            new_answer_state["isNotProgramingQuestion"] = data[
+                "isNotProgramingQuestion"
+            ]
+            return {**state, "answer_state": new_answer_state}
+
         new_answer_state = state["answer_state"]
 
         new_answer_state["summary"] = data["summary"]
@@ -66,8 +77,3 @@ class InputAgent(Agent):
         new_answer_state["level"] = data["level"]
 
         return {**state, "answer_state": new_answer_state}
-
-
-if __name__ == "__main__":
-    test = InputAgent("test")
-    print(test._create_prompt({"question": "test"}))
