@@ -5,6 +5,7 @@ import streamlit as st
 from api.history import save_question
 from api.question import fetch_and_stream_answer
 from core.agent_type import AgentType
+from utils.component_util import render_source_materials
 from utils.str_util import json_to_str
 
 
