@@ -127,11 +127,3 @@ def save_question(question_data: dict[str:str]):
         st.error(f"API 호출 오류: {str(e)}")
         return None
 
-
-def _json_to_str(json_data) -> str:
-    """
-    Json(dict) string 변환(한글 깨짐 방지)
-    :param json_data: json or Dict 객체
-    :return: str: string 직렬화
-    """
-    return json.dumps(json_data, ensure_ascii=False)
