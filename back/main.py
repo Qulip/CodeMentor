@@ -7,10 +7,9 @@ from router import question
 
 Base.metadata.create_all(bind=engine)
 
-# FastAPI 인스턴스 생성
 app = FastAPI(
-    title="Debate Arena API",
-    description="AI Debate Arena 서비스를 위한 API",
+    title="AI Tech Mentor API",
+    description="AI Tech Mentor 서비스 API",
     version="0.1.0",
 )
 
