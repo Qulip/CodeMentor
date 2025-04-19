@@ -3,10 +3,12 @@ import json
 import streamlit as st
 
 from api.history import save_question
-from api.question import stream_question
+from api.question import fetch_and_stream_answer
+from core.agent_type import AgentType
+from utils.str_util import json_to_str
 
 
-def start_question():
+def start_asking_question():
     question = st.session_state.question
     data = {
         "question": question,
@@ -14,12 +16,12 @@ def start_question():
 
     status = st.empty()
 
-    with st.spinner("답변 생성 중입니다... 완료까지 잠시 기다려주세요."):
+    with st.spinner(""):
 
-        stream_question(data, status)
+        fetch_and_stream_answer(data, status)
 
 
-def process_streaming_response(response, status: st.delta_generator):
+def process_sse_stream(response, status: st.delta_generator):
     for chunk in response.iter_lines():
         if not chunk:
             continue
@@ -51,11 +53,29 @@ def handle_event(event_data, status: st.delta_generator):
     if event_data.get("type") == "update":
         data = event_data.get("data", {})
         role = data.get("role")
+        question = data.get("question")
+        answer = data.get("answers")
+        level = data.get("level")
+        summary = data.get("summary")
+        classification = data.get("classification")
+        problems = data.get("problems")
+        solutions = data.get("solutions")
+        study_tips = data.get("study_tips")
+        docs = data.get("docs", {})
+        not_programing_question_answer = data.get("isNotProgramingQuestion")
+
 
         finish_text = data.get("finish_text")
         status.text(finish_text)
 
-        if role == AgentType.JUDGE:
+        if role == AgentType.INPUT:
+            if not_programing_question_answer & len(not_programing_question_answer) > 0:
+                answer= not_programing_question_answer
+                st.session_state.answer = answer
+
+                return True
+
+        if role == AgentType.REVIEWER:
             st.session_state.app_mode = "results"
             st.session_state.viewing_history = False
             st.session_state.answer = answer
@@ -69,22 +89,36 @@ def handle_event(event_data, status: st.delta_generator):
                 "answer": answer,
                 "level": level,
                 "summary": summary,
-                "classification": _json_to_str(classification),
-                "problems": _json_to_str(problems),
-                "solutions": _json_to_str(solutions),
-                "study_tips": _json_to_str(study_tips),
-                "docs": _json_to_str(docs),
+                "classification": json_to_str(classification),
+                "problems": json_to_str(problems),
+                "solutions": json_to_str(solutions),
+                "study_tips": json_to_str(study_tips),
+                "docs": json_to_str(docs),
             }
-            # TODO: 인자 수정
             save_question(question_data)
 
-            # 참고 자료 표시
-            if st.session_state.docs:
-                render_source_materials()
-
-            if st.button("새 토론 시작"):
-                reset_session_state()
-                st.session_state.app_mode = "input"
-                st.rerun()
+            render_source_materials()
 
     return False
+
+def render_source_materials():
+    """
+    참고 자료 노출 메서드
+    """
+    with st.expander("사용된 참고 자료 보기"):
+        st.subheader("원인 및 해결 방법 참고 자료")
+        _docs_to_streamlit(AgentType.ANALYZER)
+
+        st.subheader("추가 학습 내용 참고 자료")
+        _docs_to_streamlit(AgentType.RETRIEVER)
+
+def _docs_to_streamlit(agent_type: str):
+    """
+    에이전트 타입별 참고자료 Streamlit 노출 메서드
+    :param agent_type: 에이전트 타입
+    """
+    for i, doc in enumerate(st.session_state.docs.get(agent_type, [])[:3]):
+        st.markdown(f"**문서 {i + 1}**")
+        st.text(doc[:300] + "..." if len(doc) > 300 else doc)
+        st.divider()
+
