@@ -1,6 +1,11 @@
 class AgentType:
     """
     Agent 종류 정의
+    - INPUT
+    - ANALYZER
+    - GENERATOR
+    - RETRIEVER
+    - REVIEWER
     """
 
     INPUT = "INPUT_INTERPRETER"
