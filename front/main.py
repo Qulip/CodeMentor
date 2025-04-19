@@ -17,9 +17,20 @@ def render_ui():
         ### 프로젝트 소개
         이 애플리케이션은 AI 에이전트가 사용자가 제시한 프로그래밍 오류 질문에 대해 예상 원인, 답변, 추천 학습 내용을 제공해줍니다.
         질문을 상세하게, 용어를 많이 사용할 경우 질문의 답변이 향상될 수 있습니다.
+        여러 질문을 던져보세요!
         """
     )
-
+    with st.form("question_form", border=False):
+        st.text_area(
+            label="프로그래밍 오류에 대한 질문을 입력해주세요.:",
+            value="Python 프로젝트에서 'most likely due to a circular import' 오류가 발생하는데 원인이 뭘까?",
+            key="question",
+            height=100,
+        )
+        st.form_submit_button(
+            "제출",
+            on_click=lambda: st.session_state.update({"app_mode": "question"}),
+        )
     render_sidebar()
 
     current_mode = st.session_state.app_mode
