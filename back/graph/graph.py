@@ -47,7 +47,7 @@ def create_agent_graph(k: int = 3, session_id: str = ""):
 
 
 def _is_question_about_programing(state: AnswerState):
-    if state["isNotProgramingQuestion"]:
+    if state.get("isNotProgramingQuestion", None):
         return END
     return AgentType.ANALYZER
 

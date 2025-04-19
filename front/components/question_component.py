@@ -64,17 +64,18 @@ def handle_event(event_data, status: st.delta_generator):
         solutions = data.get("solutions")
         study_tips = data.get("study_tips")
         docs = data.get("docs", {})
-        not_programing_question_answer = data.get("isNotProgramingQuestion")
+        not_programing_question_answer = data.get("isNotProgramingQuestion", None)
 
         finish_text = data.get("finish_text")
         status.text(finish_text)
 
         if role == AgentType.INPUT:
-            if not_programing_question_answer & len(not_programing_question_answer) > 0:
-                answer = not_programing_question_answer
-                st.session_state.answer = answer
+            if not_programing_question_answer:
+                if len(not_programing_question_answer) > 0:
+                    answer = not_programing_question_answer
+                    st.session_state.answer = answer
 
-                return True
+                    return True
 
         if role == AgentType.REVIEWER:
             st.session_state.app_mode = "results"
