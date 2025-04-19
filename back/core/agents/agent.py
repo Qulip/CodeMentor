@@ -88,9 +88,22 @@ class Agent(ABC):
         """
         상태 업데이트: Agent별 추가 업데이트 이후 공통 업데이트 항목 업데이트
         """
+        custom_state = self._additional_update_state(agent_state)
+
+        answer_state = custom_state["answer_state"]
+        response = custom_state["response"]
         custom_state = self._update_answer_state(agent_state)
 
-        return custom_state
+        new_answer_state = answer_state.copy()
+
+        new_answer_state["messages"].append(
+            {
+                "role": self.role,
+                "content": response,
+            }
+        )
+
+        return {**custom_state, "answer_state": new_answer_state}
 
     def _update_answer_state(self, agent_state: AgentState) -> AgentState:
         """

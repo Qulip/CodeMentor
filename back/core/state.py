@@ -7,6 +7,7 @@ class AnswerState(TypedDict):
     """
     답변 진행 상태 클래스
     - question: 사용자 질문
+    - messages: 메시지 이력
     - answer: 질문 답변
     - level: 예측한 기술수준
     - summary: 질문 요약
@@ -19,6 +20,7 @@ class AnswerState(TypedDict):
     """
 
     question: str
+    messages: List[Dict]
     answer: str
     isNotProgramingQuestion: str
     level: str

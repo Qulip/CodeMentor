@@ -39,6 +39,7 @@ async def stream_question_workflow(request: QuestionRequest):
 
     initial_state: AnswerState = {
         "question": question,
+        "messages": [],
         "answer": "",
         "level": "",
         "summary": ",",
