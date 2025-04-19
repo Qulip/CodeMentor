@@ -8,7 +8,7 @@ class QuestionBase(BaseModel):
     """
     답변 결과 DB
     - question: 사용자 질문
-    - messages: 메시지 이력(JSON)
+    - answer: 질문 답변
     - level: 예측한 기술수준
     - summary: 질문 요약
     - classification: 질문 분야(JSON)
@@ -20,7 +20,7 @@ class QuestionBase(BaseModel):
     """
 
     question: str
-    messages: str
+    answer: str
     level: str
     summary: str
     classification: str

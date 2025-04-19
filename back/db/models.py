@@ -9,7 +9,7 @@ class Question(Base):
     """
     답변 결과 DB
     - question: 사용자 질문
-    - messages: 메시지 이력
+    - answer: 질문 응답
     - level: 예측한 기술수준
     - summary: 질문 요약
     - classification: 질문 분야
@@ -25,7 +25,7 @@ class Question(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True, index=True)
     question = Column(Text, nullable=False)
-    message = Column(Text, nullable=False)
+    answer = Column(Text, nullable=False)
     level = Column(String(20), nullable=False)
     summary = Column(String(255), nullable=False)
     classification = Column(Text, nullable=False)

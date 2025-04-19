@@ -1,6 +1,10 @@
 from core.agents.agent import Agent
-from core.state import AgentType, AnswerState
-from utils.string import get_problem_fstring, get_solution_fstring, get_study_tips_fstring
+from core.state import AgentType, AnswerState, AgentState
+from utils.string import (
+    get_problem_fstring,
+    get_solution_fstring,
+    get_study_tips_fstring,
+)
 
 
 class ReviewerAgent(Agent):
@@ -34,3 +38,12 @@ class ReviewerAgent(Agent):
             {get_study_tips_fstring(state)}
 
             """
+
+    def _update_answer_state(self, state: AgentState) -> AgentState:
+        response = state["response"]
+
+        new_answer_state = state["answer_state"]
+
+        new_answer_state["answer"] = response
+
+        return {**state, "answer_state": new_answer_state}
