@@ -78,12 +78,28 @@ async def answer_generator(answer_graph, initial_state, langfuse_handler):
         subgraph_node = subgraph.get("update_state", None)
 
         if subgraph_node:
+            response = subgraph_node.get("response", None)
+            answer_state = subgraph_node.get("answer_state", None)
+
+
             finish_text = get_agent_finish_text(role)
+            state = {
+                "question": answer_state.get("question", []),
+                "answer": answer_state.get("answer", ""),
+                "level": answer_state.get("level", ""),
+                "summary": answer_state.get("summary", ""),
+                "classification": answer_state.get("classification", {}),
+                "problems": answer_state.get("problems", []),
+                "solutions": answer_state.get("solutions", []),
+                "study_tips": answer_state.get("study_tips", []),
+                "docs": answer_state.get("docs", {}),
+            }
             event_data = {
                 "type": "update",
                 "data": {
                     "role": role,
                     "finish_text": finish_text,
+                    "state": state,
                 },
             }
             yield f"data: {json.dumps(event_data, ensure_ascii=False)}\n\n"
