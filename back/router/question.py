@@ -29,7 +29,7 @@ class QuestionResponse(BaseModel):
     result: Any = None
 
 
-@router.post("/question/stream")
+@router.post("/stream")
 async def stream_question_workflow(request: QuestionRequest):
     question = request.question
     max_search = request.max_search
@@ -80,7 +80,6 @@ async def answer_generator(answer_graph, initial_state, langfuse_handler):
         if subgraph_node:
             response = subgraph_node.get("response", None)
             answer_state = subgraph_node.get("answer_state", None)
-
 
             finish_text = get_agent_finish_text(role)
             state = {
