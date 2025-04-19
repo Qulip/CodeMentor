@@ -1,4 +1,5 @@
-from typing import Dict, List
+from typing import List
+
 from langchain.schema import HumanMessage, SystemMessage
 
 from core.retrieval.retrieval_service import RetrievalService

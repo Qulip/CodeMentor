@@ -1,11 +1,12 @@
 from abc import ABC, abstractmethod
-from langchain_community.vectorstores import FAISS
 from typing import Any, Dict, Optional, List
+
 from duckduckgo_search import DDGS
 from langchain.schema import Document
+from langchain_community.vectorstores import FAISS
 
-from utils.config import get_embeddings
 from core.state import AnswerState
+from utils.config import get_embeddings
 
 
 class RetrievalService(ABC):
