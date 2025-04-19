@@ -1,3 +1,5 @@
+from typing import Dict, Any
+
 import streamlit as st
 
 from api.history import (
@@ -10,6 +12,10 @@ from utils.state_manager import reset_session_state
 
 
 def render_history_ui():
+    st.form_submit_button(
+        "새로운 질문 하기",
+        on_click=lambda: st.session_state.update({"app_mode": "question"}),
+    )
 
     col1, col2 = st.columns([1, 1])
 
@@ -59,3 +65,8 @@ def render_history_list(question_history):
                     if delete_question_by_id(id):
                         reset_session_state()
                         st.rerun()
+
+
+def render_sidebar() -> Dict[str, Any]:
+    with st.sidebar:
+        render_history_ui()
