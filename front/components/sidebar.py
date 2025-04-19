@@ -12,15 +12,6 @@ from utils.state_manager import reset_session_state
 
 
 def render_history_ui():
-    # st.form_submit_button(
-    #     "새로운 질문 하기",
-    #     on_click=lambda: st.session_state.update({"app_mode": "question"}),
-    # )
-    if st.button("새 토론 시작"):
-        reset_session_state()
-        st.session_state.app_mode = "input"
-        st.rerun()
-
     col1, col2 = st.columns([1, 1])
 
     with col1:
