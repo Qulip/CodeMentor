@@ -39,7 +39,7 @@ class InputAgent(Agent):
             - 질문 요약은 255자 이내로 제공한다.
             - 분류 정보는 각각 가장 일치하는 1개 만 골라야 한다.
             - 일치하는 분야가 없을 경우 답변하지 않는다. 다만, 도메인, 언어는 필수로 작성한다.
-            - 답변은 Json 형태로 제공한다.
+            - 답변은 Json 형태로 제공한다.(마크다운 형식 없이 바로 직렬화 가능한 Json 형태으로 제공 요망)
             (예시:{{ 
                 "summary": "Spring Boot 환경에서 JPA로 엔티티를 저장할 때 'detached entity passed to persist' 오류가 발생함.",
                 "classification": {{
@@ -60,6 +60,7 @@ class InputAgent(Agent):
         Input Agent 전용 추가 업데이트 메서드
         """
         response = state["response"]
+        print(response)
         data = json.loads(response)
 
         new_answer_state = state["answer_state"]
