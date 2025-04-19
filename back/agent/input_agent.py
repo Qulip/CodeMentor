@@ -65,7 +65,7 @@ class InputAgent(Agent):
 
         new_answer_state = state["answer_state"]
 
-        if data["isNotProgramingQuestion"]:
+        if data.get("isNotProgramingQuestion", None):
             new_answer_state["isNotProgramingQuestion"] = data[
                 "isNotProgramingQuestion"
             ]
