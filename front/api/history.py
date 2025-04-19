@@ -42,19 +42,12 @@ def fetch_question_by_id(question_id):
         response = requests.get(f"{API_BASE_URL}/history/{question_id}")
         if response.status_code == 200:
             question_info = response.json()
-            question = question_info["question"]
 
-            messages = (
-                json.loads(question_info["messages"])
-                if isinstance(question_info["messages"], str)
-                else question_info["messages"]
-            )
-            docs = (
-                json.loads(question_info["docs"])
-                if isinstance(question_info["docs"], str)
-                else question_info.get("docs", {})
-            )
-            return question, messages, docs
+            question = question_info["question"]
+            summary = question_info["summary"]
+            answer = question_info["answer"]
+            docs = json.loads(question_info["docs"])
+            return question, summary, answer, docs
         else:
             st.error(f"데이터 조회 실패: {response.status_code}")
             return None, None, None
