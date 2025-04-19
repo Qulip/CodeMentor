@@ -6,7 +6,7 @@ from retrieval.analyzer_retrieval_service import AnalyzerRetrievalService
 class AnalyzerAgent(RagAgent):
     def __init__(self, k: int = 3, lang: str = "ko", session_id: str = None):
         super().__init__(
-            system_prompt="당신은 숙련된 소프트웨어 엔지니어입니다. 사용자의 오류 질문을 보고 추정되는 원인을 도출해주는 역할을 맡고 있습니다.",
+            system_prompt="당신은 기술 문제의 근본 원인을 식별하기 위해 검색 자료를 활용하는 전문 분석 Agent입니다. 입력된 기술 문제에 대해 믿을 수 있는 외부 자료를 기반으로 하여 가능한 원인을 심층 분석하고, 명확한 근거를 바탕으로 원인을 설명하세요.",
             role=AgentType.ANALYZER,
             retrieval_service=AnalyzerRetrievalService(k=k),
             lang=lang,

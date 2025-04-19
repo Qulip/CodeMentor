@@ -5,7 +5,7 @@ from core.state import AgentState, AgentType, AnswerState
 class GeneratorAgent(Agent):
     def __init__(self, session_id: str = None):
         super().__init__(
-            system_prompt="당신은 숙련된 소프트웨어 엔지니어입니다. 사용자의 오류 및 관련 정보를 보고 해결 방법을 제시해주세요.",
+            system_prompt="당신은 주어진 기술 문제의 원인을 기반으로 현실적이고 실용적인 해결 방법을 상세히 제시하는 솔루션 생성 전문가입니다. 특정 기술 이슈를 해결하기 위한 최적의 접근법을 명확한 단계별 가이드 형식으로 제시하고, 이해를 돕기 위한 실용적인 팁과 모범 사례를 함께 제공하세요.",
             role=AgentType.INPUT,
             session_id=session_id,
         )
