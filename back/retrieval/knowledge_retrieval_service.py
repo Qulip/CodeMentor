@@ -5,7 +5,11 @@ from langchain.schema import HumanMessage, SystemMessage
 from core.retrieval.retrieval_service import RetrievalService
 from core.state import AnswerState
 from utils.config import get_llm
-from utils.string import get_additional_info_fstring, get_problem_fstring, get_solution_fstring
+from utils.string import (
+    get_additional_info_fstring,
+    get_problem_fstring,
+    get_solution_fstring,
+)
 
 
 class KnowledgeRetrievalService(RetrievalService):

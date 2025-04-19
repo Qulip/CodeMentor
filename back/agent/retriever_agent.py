@@ -16,7 +16,7 @@ class RetrieverAgent(RagAgent):
             session_id=session_id,
         )
 
-    def _create_prompt(self, state: AnswerState)-> str:
+    def _create_prompt(self, state: AnswerState) -> str:
 
         question = state["question"]
         context = state["contexts"]
