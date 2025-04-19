@@ -34,7 +34,9 @@ def fetch_question_history():
 def fetch_question_by_id(question_id):
     """
     질문 상세 조회 API 메서드
-    - question_id: 질문 ID
+
+    Args:
+        question_id: 질문 ID
     """
     try:
         response = requests.get(f"{API_BASE_URL}/history/{question_id}")
@@ -64,7 +66,9 @@ def fetch_question_by_id(question_id):
 def delete_question_by_id(question_id):
     """
     질문 데이터 삭제(단건) API 메서드
-    - question_id: 질문 ID
+
+    Args:
+        question_id: 질문 ID
     """
     try:
         response = requests.delete(f"{API_BASE_URL}/history/{question_id}")
@@ -102,26 +106,16 @@ def delete_all_question_history():
         return False
 
 
-def save_question(topic, rounds, messages, docs=None):
+def save_question(question_data: dict[str:str]):
     """
     질문 데이터 저장 API 메서드
+
+    :param question_data: 답변 데이터
     """
     try:
         # API 요청 데이터 준비
-        debate_data = {
-            "topic": topic,
-            "rounds": rounds,
-            "messages": (
-                json.dumps(messages) if not isinstance(messages, str) else messages
-            ),
-            "docs": (
-                json.dumps(docs)
-                if docs and not isinstance(docs, str)
-                else (docs or "{}")
-            ),
-        }
 
-        response = requests.post(f"{API_BASE_URL}/history/", json=debate_data)
+        response = requests.post(f"{API_BASE_URL}/history/", json=question_data)
 
         if response.status_code == 200 or response.status_code == 201:
             st.success("질문이 성공적으로 저장되었습니다.")
@@ -132,3 +126,12 @@ def save_question(topic, rounds, messages, docs=None):
     except Exception as e:
         st.error(f"API 호출 오류: {str(e)}")
         return None
+
+
+def _json_to_str(json_data) -> str:
+    """
+    Json(dict) string 변환(한글 깨짐 방지)
+    :param json_data: json or Dict 객체
+    :return: str: string 직렬화
+    """
+    return json.dumps(json_data, ensure_ascii=False)
