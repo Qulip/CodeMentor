@@ -6,6 +6,7 @@ from api.history_api import save_question
 from api.question_api import fetch_and_stream_answer
 from core.agent_type import AgentType
 from utils.component_util import render_source_materials
+from utils.state_manager import reset_session_state
 from utils.str_util import json_to_str
 
 
@@ -65,13 +66,12 @@ def handle_event(event_data, status: st.delta_generator):
         docs = data.get("docs", {})
         not_programing_question_answer = data.get("isNotProgramingQuestion")
 
-
         finish_text = data.get("finish_text")
         status.text(finish_text)
 
         if role == AgentType.INPUT:
             if not_programing_question_answer & len(not_programing_question_answer) > 0:
-                answer= not_programing_question_answer
+                answer = not_programing_question_answer
                 st.session_state.answer = answer
 
                 return True
@@ -100,6 +100,9 @@ def handle_event(event_data, status: st.delta_generator):
 
             render_source_materials()
 
+            if st.button("새 질문 시작"):
+                reset_session_state()
+                st.session_state.app_mode = "input"
+                st.rerun()
+
     return False
-
-
