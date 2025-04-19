@@ -88,7 +88,7 @@ class Agent(ABC):
         """
         상태 업데이트: Agent별 추가 업데이트 이후 공통 업데이트 항목 업데이트
         """
-        custom_state = self._additional_update_state(agent_state)
+        custom_state = self._update_answer_state(agent_state)
 
         answer_state = custom_state["answer_state"]
         response = custom_state["response"]
