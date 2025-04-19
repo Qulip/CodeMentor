@@ -1,10 +1,9 @@
 import streamlit as st
 
-from components.history import display_question_results
-from components.question import start_asking_question
+from components.history_component import display_question_results
+from components.question_component import start_asking_question
 from components.sidebar import render_sidebar
-from utils.state_manager import init_session_state, reset_session_state
-
+from utils.state_manager import init_session_state
 
 
 def render_ui():

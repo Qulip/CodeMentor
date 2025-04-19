@@ -2,7 +2,7 @@ from typing import Dict, Any
 
 import streamlit as st
 
-from api.history import (
+from api.history_api import (
     fetch_question_history,
     fetch_question_by_id,
     delete_question_by_id,

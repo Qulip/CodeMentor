@@ -1,7 +1,7 @@
 import requests
 import streamlit as st
 
-from components.question import process_sse_stream
+from components.question_component import process_sse_stream
 from utils.config import API_BASE_URL
 
 
