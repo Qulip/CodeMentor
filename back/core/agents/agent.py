@@ -4,7 +4,7 @@ from langchain.schema import HumanMessage, SystemMessage, AIMessage
 from langfuse.callback import CallbackHandler
 from langgraph.graph import StateGraph, END
 
-from core.state import AgentState, AnswerState
+from core.state import AgentState, AnswerState, AgentType
 from utils.config import get_llm
 
 
@@ -50,6 +50,8 @@ class Agent(ABC):
 
         if "context" in agent_state:
             context = agent_state["context"]
+        elif self.role == AgentType.GENERATOR:
+            context = agent_state["context"][AgentType.ANALYZER]
         else:
             context = ""
 
@@ -63,7 +65,7 @@ class Agent(ABC):
                     HumanMessage(content=f"{message['role']}: {message['content']}")
                 )
 
-        prompt = self._create_prompt({**answer_state, "context": context})
+        prompt = self._create_prompt({**answer_state, "contexts": context})
         messages.append(HumanMessage(content=prompt))
 
         return {**agent_state, "messages": messages}

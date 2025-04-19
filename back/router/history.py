@@ -13,8 +13,8 @@ router = APIRouter(prefix="/api/v1", tags=["history"])
 # 토론 목록 조회
 @router.get("/history/", response_model=List[QuestionSchema])
 def read_questions(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    questions = db.query(QuestionModel).offset(skip).limit(limit).all()
-    return questions
+    db_questions = db.query(QuestionModel).offset(skip).limit(limit).all()
+    return db_questions
 
 
 # 토론 생성

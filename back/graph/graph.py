@@ -53,10 +53,7 @@ def _is_question_about_programing(state: AnswerState):
 
 
 def _is_solution_generate_end(state: AnswerState):
-    problem_list = state["problems"]
-    solution_list = state["solutions"]
-
-    if len(problem_list) == len(solution_list):
+    if state["problem_count"] <= state["solution_count"]:
         return AgentType.RETRIEVER
 
     return AgentType.GENERATOR

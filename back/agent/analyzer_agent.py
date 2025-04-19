@@ -41,7 +41,10 @@ class AnalyzerAgent(RagAgent):
 
         new_answer_state = state["answer_state"]
 
-        new_answer_state["problems"] = [s.strip() for s in response.content.split(",")]
+        new_answer_state["contexts"][AgentType.ANALYZER] = state["context"]
+        new_answer_state["problems"] = [s.strip() for s in response.split(",")]
         new_answer_state["solutions"] = []
+        new_answer_state["problem_count"] = len(new_answer_state["problems"])
+        new_answer_state["solution_count"] = 0
 
         return {**state, "answer_state": new_answer_state}

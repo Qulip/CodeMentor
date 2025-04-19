@@ -26,6 +26,8 @@ class AnswerState(TypedDict):
     level: str
     summary: str
     classification: Dict[str, str]
+    problem_count: int
+    solution_count: int
     problems: List[str]
     solutions: List[str]
     study_tips: List[Dict]

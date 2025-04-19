@@ -60,7 +60,6 @@ class InputAgent(Agent):
         Input Agent 전용 추가 업데이트 메서드
         """
         response = state["response"]
-        print(response)
         data = json.loads(response)
 
         new_answer_state = state["answer_state"]
