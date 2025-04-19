@@ -10,14 +10,12 @@ from db.schemas import QuestionSchema, QuestionCreate
 router = APIRouter(prefix="/api/v1", tags=["history"])
 
 
-# 토론 목록 조회
 @router.get("/history/", response_model=List[QuestionSchema])
 def read_questions(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     db_questions = db.query(QuestionModel).offset(skip).limit(limit).all()
     return db_questions
 
 
-# 토론 생성
 @router.post("/history/", response_model=QuestionSchema)
 def create_question(question: QuestionCreate, db: Session = Depends(get_db)):
     db_question = QuestionModel(**question.model_dump())
@@ -27,7 +25,6 @@ def create_question(question: QuestionCreate, db: Session = Depends(get_db)):
     return db_question
 
 
-# 토론 조회
 @router.get("/history/{question_id}", response_model=QuestionSchema)
 def read_question(question_id: int, db: Session = Depends(get_db)):
     db_question = (
@@ -38,7 +35,6 @@ def read_question(question_id: int, db: Session = Depends(get_db)):
     return db_question
 
 
-# 토론 삭제
 @router.delete("/history/{question_id}")
 def delete_question(question_id: int, db: Session = Depends(get_db)):
     db_question = (

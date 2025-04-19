@@ -54,7 +54,7 @@ def get_study_tips_fstring(answer_state: AnswerState) -> str:
     if answer_state.get("study_tips"):
         fstring_list.append(f"- 추가로 학습하면 좋을 내용: ")
         for tip in answer_state.get("study_tips"):
-            fstring_list.append(f"  > 내용: '{tip["infomation"]}'")
+            fstring_list.append(f"  > 내용: '{tip["information"]}'")
             fstring_list.append(f"    이유: '{tip["reason"]}'")
 
     rst = f""

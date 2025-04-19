@@ -24,25 +24,23 @@ def render_history_ui():
                 reset_session_state()
                 st.rerun()
 
-    # 토론 이력 로드
     question_history = fetch_question_history()
 
     if not question_history:
-        st.info("저장된 토론 이력이 없습니다.")
+        st.info("저장된 질문 이력이 없습니다.")
     else:
         render_history_list(question_history)
 
 
-# 토론 이력 목록 렌더링
 def render_history_list(question_history):
     for id, summary, created_at, level in question_history:
         with st.container(border=True):
 
             st.write(f"***{summary}***")
 
-            col1, col2, col3 = st.columns([3, 1, 1])
+            col1, col2, col3 = st.columns([2, 1, 1])
             with col1:
-                st.caption(f"날짜: {created_at} | 예측 난이도: {level}")
+                st.caption(f"질문일: {created_at[:10]}  예측 난이도: {level}")
 
             with col2:
                 if st.button("보기", key=f"view_{id}", use_container_width=True):

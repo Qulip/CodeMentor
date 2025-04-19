@@ -112,11 +112,10 @@ def save_question(question_data: dict[str:str]):
 
         if response.status_code == 200 or response.status_code == 201:
             st.success("질문이 성공적으로 저장되었습니다.")
-            return response.json().get("id")  # 저장된 토론 ID 반환
+            return response.json().get("id")
         else:
             st.error(f"질문 저장 실패: {response.status_code} - {response.text}")
             return None
     except Exception as e:
         st.error(f"API 호출 오류: {str(e)}")
         return None
-
