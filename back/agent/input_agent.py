@@ -62,15 +62,13 @@ class InputAgent(Agent):
         response = state["response"]
         data = json.loads(response)
 
-        if data["isNotProgramingQuestion"]:
-            new_answer_state = state["answer_state"]
+        new_answer_state = state["answer_state"]
 
+        if data["isNotProgramingQuestion"]:
             new_answer_state["isNotProgramingQuestion"] = data[
                 "isNotProgramingQuestion"
             ]
             return {**state, "answer_state": new_answer_state}
-
-        new_answer_state = state["answer_state"]
 
         new_answer_state["summary"] = data["summary"]
         new_answer_state["classification"] = data["classification"]
