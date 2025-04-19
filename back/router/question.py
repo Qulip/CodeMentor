@@ -115,10 +115,12 @@ async def answer_generator(answer_graph, initial_state, langfuse_handler):
 
 @router.post("/stream/test")
 async def stream_test(request: QuestionRequest):
-    return StreamingResponse(stream_test_generator(), media_type="text/event-stream")
+    return StreamingResponse(
+        stream_test_generator(request.question), media_type="text/event-stream"
+    )
 
 
-async def stream_test_generator():
+async def stream_test_generator(question: str):
     fake_roles = [
         "INPUT_INTERPRETER",
         "PROBLEM_ANALYZER",
@@ -135,7 +137,7 @@ async def stream_test_generator():
                 "role": role,
                 "finish_text": get_agent_finish_text(role),
                 "state": {
-                    "question": "이것은 테스트 질문입니다.",
+                    "question": question,
                     "answer": f"가짜 응답 {i}",
                     "level": "중급",
                     "summary": "요약된 설명",
@@ -143,7 +145,10 @@ async def stream_test_generator():
                     "problems": [f"가짜 문제 {i}"],
                     "solutions": [f"가짜 해결책 {i}"],
                     "study_tips": [f"Tip {i}"],
-                    "docs": {"doc1": "테스트 문서"},
+                    "docs": {
+                        "PROBLEM_ANALYZER": "테스트 문서1",
+                        "KNOWLEDGE_RETRIEVER": "테스트 문서2",
+                    },
                 },
             },
         }
