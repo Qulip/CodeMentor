@@ -23,8 +23,8 @@ def render_ui():
     with st.form("question_form", border=False):
         st.text_area(
             label="프로그래밍 오류에 대한 질문을 입력해주세요.:",
-            value="Python 프로젝트에서 'most likely due to a circular import' 오류가 발생하는데 원인이 뭘까?",
-            key="question",
+            value=st.session_state.docs_init_question,
+            key="ui_question",
             height=100,
         )
         st.form_submit_button(
@@ -34,6 +34,7 @@ def render_ui():
     render_sidebar()
 
     current_mode = st.session_state.app_mode
+    print(current_mode)
 
     if current_mode == "question":
         start_asking_question()

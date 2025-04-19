@@ -21,6 +21,7 @@ def render_history_ui():
     with col2:
         if st.button("전체 이력 삭제", type="primary", use_container_width=True):
             if delete_all_question_history():
+                reset_session_state()
                 st.rerun()
 
     # 토론 이력 로드

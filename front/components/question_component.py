@@ -11,7 +11,7 @@ from utils.str_util import json_to_str
 
 
 def start_asking_question():
-    question = st.session_state.question
+    question = st.session_state.ui_question
     data = {
         "question": question,
     }
@@ -19,7 +19,6 @@ def start_asking_question():
     status = st.empty()
 
     with st.spinner(""):
-
         fetch_and_stream_answer(data, status)
 
 
@@ -55,16 +54,17 @@ def handle_event(event_data, status: st.delta_generator):
     if event_data.get("type") == "update":
         data = event_data.get("data", {})
         role = data.get("role")
-        question = data.get("question")
-        answer = data.get("answers")
-        level = data.get("level")
-        summary = data.get("summary")
-        classification = data.get("classification")
-        problems = data.get("problems")
-        solutions = data.get("solutions")
-        study_tips = data.get("study_tips")
-        docs = data.get("docs", {})
-        not_programing_question_answer = data.get("isNotProgramingQuestion", None)
+        state = data.get("state")
+        question = state.get("question")
+        answer = state.get("answer")
+        level = state.get("level")
+        summary = state.get("summary")
+        classification = state.get("classification")
+        problems = state.get("problems")
+        solutions = state.get("solutions")
+        study_tips = state.get("study_tips")
+        docs = state.get("docs", {})
+        not_programing_question_answer = state.get("isNotProgramingQuestion", None)
 
         finish_text = data.get("finish_text")
         status.text(finish_text)
@@ -75,16 +75,21 @@ def handle_event(event_data, status: st.delta_generator):
                     answer = not_programing_question_answer
                     st.session_state.answer = answer
 
-                    return True
+        print(role)
 
         if role == AgentType.REVIEWER:
             st.session_state.app_mode = "results"
             st.session_state.viewing_history = False
+            st.session_state.summary = summary
             st.session_state.answer = answer
             st.session_state.docs = docs
 
+            st.header(f"{summary}")
+            with st.chat_message("USER", avatar="🙋‍♀️"):
+                st.markdown(question)
+
             with st.chat_message(role, avatar="🖥"):
-                st.markdown(finish_text)
+                st.markdown(answer)
 
             question_data = {
                 "question": question,

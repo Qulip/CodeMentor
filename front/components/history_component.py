@@ -12,19 +12,19 @@ def display_question_results():
         summary = st.session_state.loaded_summary
         answer = st.session_state.loaded_answer
     else:
-        question = st.session_state.question
-        st.header(f"질문 : {question}")
-        return
+        question = st.session_state.ui_question
+        summary = st.session_state.summary
+        answer = st.session_state.answer
 
-    st.header(f"질문 요약: {summary}")
+    st.header(f"{summary}")
 
     with st.chat_message("USER", avatar="🙋‍♀️"):
         st.markdown(question)
     with st.chat_message(AgentType.REVIEWER, avatar="💻"):
         st.markdown(answer)
 
-    st.session_state.question_active = True
-    st.session_state.viewing_history = False
+    st.session_state.question_active = False
+    st.session_state.viewing_history = True
 
     if st.session_state.docs:
         render_source_materials()
