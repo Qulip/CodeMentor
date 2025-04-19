@@ -1,7 +1,6 @@
 import requests
 import streamlit as st
 
-from components.question_component import process_sse_stream
 from utils.config import API_BASE_URL
 
 
@@ -17,6 +16,8 @@ def fetch_and_stream_answer(data: dict[str:str], status: st.delta_generator):
         if response.status_code != 200:
             st.error(f"API 오류: {response.status_code} - {response.text}")
             return
+
+        from components.question_component import process_sse_stream
 
         process_sse_stream(response, status)
 
