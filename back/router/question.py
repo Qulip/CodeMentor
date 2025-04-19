@@ -106,7 +106,7 @@ async def answer_generator(answer_graph, initial_state, langfuse_handler):
                 },
             }
             yield f"data: {json.dumps(event_data, ensure_ascii=False)}\n\n"
-            print(event_data)
+            # print(event_data)
 
             await asyncio.sleep(0.01)
 

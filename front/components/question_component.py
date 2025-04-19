@@ -75,8 +75,6 @@ def handle_event(event_data, status: st.delta_generator):
                     answer = not_programing_question_answer
                     st.session_state.answer = answer
 
-        print(role)
-
         if role == AgentType.REVIEWER:
             st.session_state.app_mode = "results"
             st.session_state.viewing_history = False

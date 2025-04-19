@@ -7,8 +7,8 @@ from utils.config import API_BASE_URL
 def fetch_and_stream_answer(data: dict[str:str], status: st.delta_generator):
     try:
         response = requests.post(
-            f"{API_BASE_URL}/question/stream/test",
-            # f"{API_BASE_URL}/question/stream",
+            # f"{API_BASE_URL}/question/stream/test",
+            f"{API_BASE_URL}/question/stream",
             json=data,
             stream=True,
             headers={"Content-Type": "application/json"},

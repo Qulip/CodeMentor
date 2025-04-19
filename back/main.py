@@ -20,3 +20,5 @@ app.include_router(question.router)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8001, reload=True)
+
+# uvicorn main:app --port=8001
