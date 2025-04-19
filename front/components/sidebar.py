@@ -54,12 +54,13 @@ def render_history_list(question_history):
 
             with col2:
                 if st.button("보기", key=f"view_{id}", use_container_width=True):
-                    topic, messages, docs = fetch_question_by_id(id)
-                    if topic and messages:
+                    question, summary, answer, docs = fetch_question_by_id(id)
+                    if question and answer:
                         st.session_state.viewing_history = True
-                        st.session_state.messages = messages
-                        st.session_state.loaded_topic = topic
-                        st.session_state.loaded_debate_id = id
+                        st.session_state.loaded_question = question
+                        st.session_state.loaded_summary = summary
+                        st.session_state.loaded_answer = answer
+                        st.session_state.loaded_question_id = id
                         st.session_state.docs = docs
                         st.session_state.app_mode = "results"
                         st.rerun()
