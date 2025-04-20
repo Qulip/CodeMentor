@@ -82,7 +82,6 @@ def handle_event(event_data, status: st.delta_generator):
             st.session_state.answer = answer
             st.session_state.docs = docs
 
-            st.header(f"{summary}")
             with st.chat_message("USER", avatar="🙋‍♀️"):
                 st.markdown(question)
 

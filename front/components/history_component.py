@@ -16,8 +16,6 @@ def display_question_results():
         summary = st.session_state.summary
         answer = st.session_state.answer
 
-    st.header(f"{summary}")
-
     with st.chat_message("USER", avatar="🙋‍♀️"):
         st.markdown(question)
     with st.chat_message(AgentType.REVIEWER, avatar="💻"):
