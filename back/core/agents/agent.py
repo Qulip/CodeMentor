@@ -94,7 +94,6 @@ class Agent(ABC):
 
         answer_state = custom_state["answer_state"]
         response = custom_state["response"]
-        custom_state = self._update_answer_state(agent_state)
 
         new_answer_state = answer_state.copy()
 
