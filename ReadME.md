@@ -27,3 +27,17 @@
 ## 서비스 주요 기능 설명 📚
 
 `AI_Code_Mentor_사용설명서.pdf` 참조
+
+## 실행방법
+
+- pip 설치 `pip install -r requirements.txt`
+- FastAPI 실행
+  ```
+  cd ./back
+  uvicorn main:app --port=8001 --reload
+  ```
+- StreamLit 실행
+  ```
+  cd ./front
+  streamlit run main.py
+  ```
