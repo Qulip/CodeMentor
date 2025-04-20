@@ -106,9 +106,4 @@ def handle_event(event_data, status: st.delta_generator):
 
             render_source_materials()
 
-            if st.button("새 질문 시작"):
-                reset_session_state()
-                st.session_state.app_mode = "input"
-                st.rerun()
-
     return False
