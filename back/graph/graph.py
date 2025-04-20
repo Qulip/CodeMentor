@@ -26,11 +26,10 @@ def create_agent_graph(k: int = 3, session_id: str = ""):
 
     workflow.set_entry_point(AgentType.INPUT)
 
-    workflow.add_edge(AgentType.INPUT, AgentType.ANALYZER)
     workflow.add_conditional_edges(
         AgentType.INPUT,
         _is_question_about_programing,
-        [END, AgentType.ANALYZER],
+        [AgentType.ANALYZER, END],
     )
     workflow.add_edge(AgentType.ANALYZER, AgentType.GENERATOR)
 
@@ -47,7 +46,8 @@ def create_agent_graph(k: int = 3, session_id: str = ""):
 
 
 def _is_question_about_programing(state: AnswerState):
-    if state.get("isNotProgramingQuestion", None):
+    is_not_programing_question =  state.get("isNotProgramingQuestion", None)
+    if is_not_programing_question:
         return END
     return AgentType.ANALYZER
 
