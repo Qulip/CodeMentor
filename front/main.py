@@ -34,7 +34,6 @@ def render_ui():
     render_sidebar()
 
     current_mode = st.session_state.app_mode
-    print(current_mode)
 
     if current_mode == "question":
         start_asking_question()
