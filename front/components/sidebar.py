@@ -58,7 +58,7 @@ def render_history_list(question_history):
             with col3:
                 if st.button("삭제", key=f"del_{id}", use_container_width=True):
                     if delete_question_by_id(id):
-                        reset_session_state()
+                        reset_session_state(True)
                         st.rerun()
 
 

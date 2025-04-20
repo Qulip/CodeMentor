@@ -97,6 +97,11 @@ async def answer_generator(answer_graph, initial_state, langfuse_handler):
                 "study_tips": answer_state.get("study_tips", []),
                 "docs": answer_state.get("docs", {}),
             }
+
+            not_programing_question = answer_state.get("isNotProgramingQuestion", None)
+            if not_programing_question:
+                state = {**state, "not_programing_question_answer": not_programing_question}
+
             event_data = {
                 "type": "update",
                 "data": {
@@ -185,7 +190,7 @@ async def stream_test_error_generator(question: str):
                     "solutions": [],
                     "study_tips": [],
                     "docs": {},
-                    "isNotProgramingQuestion": "해당 질문은 프로그래밍 질문이 아니라 답변이 어렵습니다.",
+                    "not_programing_question_answer": "해당 질문은 프로그래밍 질문이 아니라 답변이 어렵습니다.",
                 },
             },
         }

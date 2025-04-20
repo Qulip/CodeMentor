@@ -64,7 +64,7 @@ def handle_event(event_data, status: st.delta_generator):
         solutions = state.get("solutions")
         study_tips = state.get("study_tips")
         docs = state.get("docs", {})
-        not_programing_question_answer = state.get("isNotProgramingQuestion", None)
+        not_programing_question_answer = state.get("not_programing_question_answer", None)
 
         finish_text = data.get("finish_text")
         status.text(finish_text)
