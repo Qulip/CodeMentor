@@ -40,7 +40,7 @@ class InputAgent(Agent):
             - 분류 정보는 각각 가장 일치하는 1개 만 골라야 한다.
             - 일치하는 분야가 없을 경우 답변하지 않는다. 다만, 도메인, 언어는 필수로 작성한다.
             - 답변은 Json 형태로 제공한다.(마크다운 형식 없이 바로 직렬화 가능한 Json 형태으로 제공 요망)
-            (예시:{{ 
+            (예시1:{{ 
                 "summary": "Spring Boot 환경에서 JPA로 엔티티를 저장할 때 'detached entity passed to persist' 오류가 발생함.",
                 "classification": {{
                     "domain": "Backend",
@@ -50,9 +50,20 @@ class InputAgent(Agent):
                     "tags": "엔티티 매핑"
                 }},
                 "level": "Intermediate"
+            }}
+            예시2:{{ 
+                "summary": "파이썬 코드를 실행했더니 SyntaxError: invalid syntax라는 오류가 뜹니다. 무슨 뜻이고 어떻게 해결하나요?",
+                "classification": {{
+                    "domain": "Backend",
+                    "language": "Python",
+                    "errorType": "런타임 에러",
+                    "tags": "함수 오류"
+                }},
+                "level": "Beginner"
             }})
             - 만약 프로그래밍 관련 질문이 아니라면, 답변이 불가능하다 말해줘.
-            (예시: {{"isNotProgramingQuestion": "해당 질문은 프로그래밍 질문이 아니라 답변이 어렵습니다."}})
+            (예시1: {{"isNotProgramingQuestion": "해당 질문은 프로그래밍 질문이 아니라 답변이 어렵습니다."}}
+            예시2: {{"isNotProgramingQuestion": "저는 프로그래밍 질문에만 답변이 가능해요."}})
             """
 
     def _update_answer_state(self, state: AgentState) -> AgentState:
