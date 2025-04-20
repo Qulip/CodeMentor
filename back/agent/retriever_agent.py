@@ -48,7 +48,7 @@ class RetrieverAgent(RagAgent):
                     "reason": "엔티티의 설계가 정규화가 부족함. 정규화를 학습하여 엔티티를 다시 설계하면 더욱 좋은 설계가 가능할 듯 함."
                 }},
                 {{ 
-                    "infomation": "Query 메서드와 JPQL 활용",
+                    "information": "Query 메서드와 JPQL 활용",
                     "reason": "효율적인 데이터 조회 및 동적 쿼리 구현에 유용합니다."
                 }},
             ])
