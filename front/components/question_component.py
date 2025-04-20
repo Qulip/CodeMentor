@@ -72,8 +72,11 @@ def handle_event(event_data, status: st.delta_generator):
         if role == AgentType.INPUT:
             if not_programing_question_answer:
                 if len(not_programing_question_answer) > 0:
-                    answer = not_programing_question_answer
-                    st.session_state.answer = answer
+                    with st.chat_message("USER", avatar="🙋‍♀️"):
+                        st.markdown(question)
+
+                    with st.chat_message(role, avatar="🖥"):
+                        st.markdown(not_programing_question_answer)
 
         if role == AgentType.REVIEWER:
             st.session_state.app_mode = "results"

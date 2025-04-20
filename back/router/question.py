@@ -156,3 +156,39 @@ async def stream_test_generator(question: str):
 
     # 스트림 종료 이벤트
     yield f"data: {json.dumps({'type': 'end', 'data': {}}, ensure_ascii=False)}\n\n"
+
+@router.post("/stream/test/notProgramQuestion")
+async def stream_test_not_program_question(request: QuestionRequest):
+    return StreamingResponse(
+        stream_test_error_generator(request.question), media_type="text/event-stream"
+    )
+
+async def stream_test_error_generator(question: str):
+    fake_roles = [
+        "INPUT_INTERPRETER",
+    ]
+
+    for i, role in enumerate(fake_roles, start=1):
+        await asyncio.sleep(2)  # 2초 대기
+        event_data = {
+            "type": "update",
+            "data": {
+                "role": role,
+                "finish_text": get_agent_finish_text(role),
+                "state": {
+                    "question": question,
+                    "answer": "",
+                    "level": "",
+                    "summary": "",
+                    "classification": {},
+                    "problems": [],
+                    "solutions": [],
+                    "study_tips": [],
+                    "docs": {},
+                    "isNotProgramingQuestion": "해당 질문은 프로그래밍 질문이 아니라 답변이 어렵습니다.",
+                },
+            },
+        }
+        yield f"data: {json.dumps(event_data, ensure_ascii=False)}\n\n"
+
+    yield f"data: {json.dumps({'type': 'end', 'data': {}}, ensure_ascii=False)}\n\n"
